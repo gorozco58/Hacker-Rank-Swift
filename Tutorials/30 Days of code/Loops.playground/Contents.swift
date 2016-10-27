@@ -1,5 +1,6 @@
-//: Playground - noun: a place where people can play
 
-import UIKit
+let n = 2 //change the number to get different answers
 
-var str = "Hello, playground"
+for number in 1 ... 10 {
+    print("\(n) x \(number) = \(n*number)")
+}

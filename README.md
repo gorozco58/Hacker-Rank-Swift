@@ -6,7 +6,7 @@
 
 Hacker Rank Exercises is a list with problems and Algorithms proposed in [Hacker Rank](https://www.hackerrank.com) All of them are written in Swift programming language with Swift 3.0 please be careful when use them due to Hacker Rank page only compile Swift version 2.2.
 
-**NOTE**: The input variable are hardcoded so to use them in Hacker range you need to change inputs to `readLine()!` Swift function  
+**NOTE**: The input variables are hardcoded so to use them in Hacker range you need to change inputs to `readLine()!` Swift function  
 
 # Table of Contents
 
