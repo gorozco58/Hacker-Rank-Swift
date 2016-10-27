@@ -10,5 +10,5 @@ Hacker Rank Exercises is a list with problems and Algorithms proposed in [KHacke
 
 # Table of Contents
 
-- [Tutorials](#about-reswift)
+- [Tutorials](https://github.com/gorozco58/Hacker-Rank-Exercises/tree/master/Tutorials)
 
