@@ -36,3 +36,4 @@ var frequency2 = getFrequency(from: "abc".characters.map { String($0) })
 let deleted = deference(from: &frequency1, to: &frequency2) + deference(from: &frequency2, to: &frequency1)
 
 print(deleted)
+
