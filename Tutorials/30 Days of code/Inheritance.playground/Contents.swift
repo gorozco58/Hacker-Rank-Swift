@@ -58,9 +58,14 @@ class Student: Person {
 
 
 
-let nameAndID = readLine()!.characters.split(" ").map{String($0)}
-let scoreCount = readLine()
-let scores = readLine()!.characters.split(" ").map{Int(String($0))!}
+//let nameAndID = readLine()!.characters.split(" ").map{String($0)}
+//let scoreCount = readLine()
+//let scores = readLine()!.characters.split(" ").map{Int(String($0))!}
+
+//test imputs
+let nameAndID = ["Heraldo", "Memelli", "8135627"]
+let scoreCount = 2
+let scores = [100, 80]
 
 let s = Student(firstName: nameAndID[0], lastName: nameAndID[1], identification: Int(nameAndID[2])!, scores: scores)
 
