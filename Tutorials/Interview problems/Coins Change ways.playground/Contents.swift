@@ -25,4 +25,4 @@ func countWays(from coins: [Int], total: Int) {
     }
 }
 
-countWays(from: [1, 2, 3], total: 4)
+countWays(from: [1, 2, 3, 0], total: 4)
