@@ -11,5 +11,6 @@
         <page name='rootToLeafPaths'/>
         <page name='Mirror'/>
         <page name='Checking'/>
+        <page name='ClosestNode'/>
     </pages>
 </playground>

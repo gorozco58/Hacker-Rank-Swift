@@ -8,9 +8,8 @@ extension BinaryTree {
         func maxDepth(_ root: Node<T>?) -> Int {
             if let root = root {
                 return Swift.max(maxDepth(root.left) + 1, maxDepth(root.right) + 1)
-            } else {
-                return 0
             }
+            return -1
         }
 
         return maxDepth(root)
