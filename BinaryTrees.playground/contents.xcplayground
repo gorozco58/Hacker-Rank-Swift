@@ -12,5 +12,6 @@
         <page name='Mirror'/>
         <page name='Checking'/>
         <page name='ClosestNode'/>
+        <page name='ContactList'/>
     </pages>
 </playground>
