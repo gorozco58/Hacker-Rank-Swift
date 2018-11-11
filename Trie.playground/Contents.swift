@@ -1,21 +1,27 @@
 import UIKit
 
 class TrieNode<T: Hashable> {
+    typealias Node = TrieNode<T>
+    
     var value: T?
     var isTerminating = false
-    weak var parent: TrieNode?
-    var children: [T: TrieNode] = [:]
+    var children: [T: Node] = [:]
+    weak var parent: Node?
     
-    init(value: T? = nil, parent: TrieNode? = nil) {
+    var isLeaf: Bool {
+        return children.count == 0
+    }
+    
+    init(value: T? = nil, parent: Node? = nil) {
         self.value = value
         self.parent = parent
     }
     
-    @discardableResult func add(child: T) -> TrieNode<T> {
+    @discardableResult func add(child: T) -> Node {
         if let childNode = children[child] {
             return childNode
         } else {
-            let newNode = TrieNode(value: child, parent: self)
+            let newNode = Node(value: child, parent: self)
             children[child] = newNode
             return newNode
         }
@@ -32,50 +38,76 @@ class TrieNode<T: Hashable> {
 
 struct Trie {
     typealias Node = TrieNode<Character>
-    let root: Node
     
-    init() {
-        root = Node()
+    public var count: Int {
+        return wordCount
     }
     
-    var description: String {
+    public var isEmpty: Bool {
+        return wordCount == 0
+    }
+    
+    public var words: [String] {
+        return wordsInSubtrie(rootNode: root, partialWord: "")
+    }
+    
+    public var description: String {
         return root.description
+    }
+    
+    fileprivate let root: Node
+    fileprivate var wordCount: Int
+    
+    public init() {
+        root = Node()
+        wordCount = 0
     }
 }
 
-//Basics
+// MARK: - Adds methods: insert, remove, contains
 extension Trie {
     
-    func insert(_ word: String) {
+    mutating func insert(_ word: String) {
         guard !word.isEmpty else { return }
         var currentNode = root
         
-        for (currentIndex, character) in word.lowercased().enumerated() {
-            
-            if let child = currentNode.children[character] {
-                currentNode = child
+        for character in word.lowercased() {
+            if let childNode = currentNode.children[character] {
+                currentNode = childNode
             } else {
                 currentNode = currentNode.add(child: character)
             }
-            
-            if currentIndex == word.count - 1 {
-                currentNode.isTerminating = true
-            }
         }
+        
+        guard !currentNode.isTerminating else {
+            return
+        }
+        wordCount += 1
+        currentNode.isTerminating = true
     }
     
     func contains(_ word: String) -> Bool {
         guard !word.isEmpty else { return false }
         var currentNode = root
-        let characters = word.lowercased().map { $0 }
-        var currentIndex = 0
         
-        while currentIndex < characters.count, let child = currentNode.children[characters[currentIndex]] {
-            currentIndex += 1
-            currentNode = child
+        for character in word.lowercased() {
+            guard let childNode = currentNode.children[character] else {
+                return false
+            }
+            currentNode = childNode
         }
-        
-        return currentIndex == characters.count && currentNode.isTerminating
+        return currentNode.isTerminating
+    }
+    
+    mutating func remove(word: String) {
+        guard !word.isEmpty, let terminalNode = findTerminalNodeOf(word: word) else { return }
+       
+        if terminalNode.isLeaf {
+            deleteNodesForWordEndingWith(terminalNode: terminalNode)
+        } else {
+            terminalNode.isTerminating = false
+        }
+        wordCount -= 1
     }
     
     func findWordsWithPrefix(prefix: String) -> [String] {
@@ -107,6 +139,13 @@ private extension Trie {
         return currentNode
     }
     
+    func findTerminalNodeOf(word: String) -> Node? {
+        if let lastNode = findLastNodeOf(word: word) {
+            return lastNode.isTerminating ? lastNode : nil
+        }
+        return nil
+    }
+    
     func wordsInSubtrie(rootNode: Node, partialWord: String) -> [String] {
         var subtrieWords = [String]()
         var previousLetters = partialWord
@@ -122,13 +161,27 @@ private extension Trie {
         }
         return subtrieWords
     }
+    
+    func deleteNodesForWordEndingWith(terminalNode: Node) {
+        var lastNode = terminalNode
+        var character = lastNode.value
+        while lastNode.isLeaf, let parentNode = lastNode.parent {
+            lastNode = parentNode
+            lastNode.children[character!] = nil
+            character = lastNode.value
+            if lastNode.isTerminating {
+                break
+            }
+        }
+    }
 }
 
-let trie = Trie()
+var trie = Trie()
 trie.insert("Cute")
 trie.contains("cute")
 trie.contains("Cut")
 trie.insert("cut")
 trie.contains("Cut")
 trie.insert("Cat")
-trie.findWordsWithPrefix(prefix: "C")
+trie.findWordsWithPrefix(prefix: "Cu")
+trie.words
